@@ -1,0 +1,115 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+  public class Solution{
+      static int unionfind(int index,int [] parent)
+      {
+        while(index!=parent[index])
+        {
+          index=parent[index];
+        }
+        return index;
+      }
+     
+     static void bfs( ArrayList<ArrayList<Integer>> list,int parent[], int size,int visited[],int v)
+     {
+       Queue<Integer> q=new LinkedList<>();
+       q.add(v); visited[v]=1;
+       
+       while(!q.isEmpty())
+       {
+        int vertex=q.poll();
+        int lsize=list.get(vertex).size();
+        for(int i=0;i<lsize;++i)
+        {
+          int child=list.get(vertex).get(i);
+          if(visited[child]!=1)
+          {
+            q.add(child);
+            parent[child]=vertex;
+            visited[child]=1;
+          }
+        }
+       }
+       
+     }
+     
+     static void getParents( ArrayList<ArrayList<Integer>> list,int parent[], int size)
+     {
+     int visited[]=new int[size];
+      for(int i=0;i<size;++i)
+      {     
+          if(visited[i]!=1)
+            bfs(list,parent,size,visited,i); 
+      } 
+    }
+     
+     static long solve( ArrayList<ArrayList<Integer>> list, int size,int road_cost, int lib_cost)
+     {
+        int parent[]=new int[size];
+        for(int i=0;i<size;++i)
+        {
+          parent[i]=i;
+        }
+        getParents(list,parent,size);
+        
+        int cost[]=new int[size];  long sum=0;
+        for(int i=0;i<size;++i)
+        {
+          int p=unionfind(i,parent); int count=0;
+          if(p==i)
+          {
+            ++count;
+          }
+          else
+          {
+            if(road_cost+cost[p] >=lib_cost )
+            {
+              ++count;
+            }
+            else
+            {
+               cost[i]=road_cost+cost[p];
+                sum+=(long)road_cost+cost[p];
+            }    
+          }
+          sum+=(long)count*lib_cost;
+        }
+        return sum;
+              
+     }
+    public static void main(String args[])
+    {
+      Scanner sc=new Scanner(System.in);
+      int t=sc.nextInt();
+      while(t-->0)
+      {
+      int size=sc.nextInt();
+      int roads=sc.nextInt();
+      int lib_cost=sc.nextInt();
+      int road_cost=sc.nextInt();
+      
+      ArrayList<ArrayList<Integer>> list=new ArrayList<>();
+      for(int i=0;i<size;++i)
+      {
+        list.add(new ArrayList<Integer>());
+      }
+      
+      for(int i=0;i<roads;++i)
+      {
+        int p1=sc.nextInt()-1; int p2=sc.nextInt()-1;
+        list.get(p1).add(p2); list.get(p2).add(p1);
+      }
+      
+      long minCost=solve(list,size,road_cost,lib_cost);
+      System.out.println(minCost);
+      System.gc();
+      }   
+      sc.close();
+    }
+  }

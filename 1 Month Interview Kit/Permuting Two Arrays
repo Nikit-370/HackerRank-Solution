@@ -1,0 +1,146 @@
+import java.io.*;
+import java.math.BigInteger;
+import java.util.*;
+
+import static java.util.Arrays.*;
+
+public class Solution {
+	private static final int mod = (int)1e9+7;
+	
+	final Random random = new Random(1);
+	final IOFast io = new IOFast();
+	
+	public void run() throws IOException {
+		int T = io.nextInt();
+		LOOP: while(T-- != 0) {
+			int n = io.nextInt();
+			int k = io.nextInt();
+			int[] A = new int[n];
+			int[] B = new int[n];
+			for(int i = 0; i < A.length; i++) {
+				A[i] = io.nextInt();
+			}
+			for(int i = 0; i < A.length; i++) {
+				B[i] = io.nextInt();
+			}
+			sort(A);
+			sort(B);
+			for(int i = 0; i < A.length; i++) {
+				if(A[i] + B[n-1-i] < k) {
+					io.out.println("NO");
+					continue LOOP;
+				}
+			}
+			io.out.println("YES");
+		}
+	}
+	
+	void main() throws IOException {
+		//		IOFast.setFileIO("rle-size.in", "rle-size.out");
+		try {
+			run();
+		}
+		catch (EndOfFileRuntimeException e) { }
+		io.out.flush();
+	}
+
+	public static void main(String[] args) throws IOException {
+		new Solution().main();
+	}
+	
+	static class EndOfFileRuntimeException extends RuntimeException {
+		private static final long serialVersionUID = -8565341110209207657L; }
+
+	static
+	public class IOFast {
+		private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		private PrintWriter out = new PrintWriter(System.out);
+
+		void setFileIO(String ins, String outs) throws IOException {
+			in = new BufferedReader(new FileReader(ins));
+			out = new PrintWriter(new FileWriter(outs));
+		}
+
+		//		private static final int BUFFER_SIZE = 50 * 200000;
+		private static int pos, readLen;
+		private static final char[] buffer = new char[1024 * 8];
+		private static final char[] str = new char[500000*8*2];
+		private static boolean[] isDigit = new boolean[256];
+		private static boolean[] isSpace = new boolean[256];
+		private static boolean[] isLineSep = new boolean[256];
+
+		static {
+			for(int i = 0; i < 10; i++) { isDigit['0' + i] = true; }
+			isDigit['-'] = true;
+			isSpace[' '] = isSpace['\r'] = isSpace['\n'] = isSpace['\t'] = true;
+			isLineSep['\r'] = isLineSep['\n'] = true;
+		}
+
+		public int read() throws IOException {
+			if(pos >= readLen) {
+				pos = 0;
+				readLen = in.read(buffer);
+				if(readLen <= 0) { throw new EndOfFileRuntimeException(); }
+			}
+			return buffer[pos++];
+		}
+
+		public int nextInt() throws IOException {
+			return Integer.parseInt(nextString());
+		}
+
+		public long nextLong() throws IOException {
+			return Long.parseLong(nextString());
+		}
+
+		public char nextChar() throws IOException {
+			while(true) {
+				final int c = read();
+				if(!isSpace[c]) { return (char)c; }
+			}
+		}
+		
+		int reads(char[] cs, int len, boolean[] accept) throws IOException {
+			try {
+				while(true) {
+					final int c = read();
+					if(accept[c]) { break; }
+					str[len++] = (char)c;
+				}
+			}
+			catch(EndOfFileRuntimeException e) { ; }
+			
+			return len;
+		}
+
+		public char[] nextLine() throws IOException {
+			int len = 0;
+			str[len++] = nextChar();
+			len = reads(str, len, isLineSep);
+			
+			try {
+				if(str[len-1] == '\r') { len--; read(); }
+			}
+			catch(EndOfFileRuntimeException e) { ; }
+			
+			return Arrays.copyOf(str, len);
+		}
+
+		public String nextString() throws IOException {
+			return new String(next());
+		}
+
+		public char[] next() throws IOException {
+			int len = 0;
+			str[len++] = nextChar();
+			len = reads(str, len, isSpace);
+			return Arrays.copyOf(str, len);
+		}
+
+		public double nextDouble() throws IOException {
+			return Double.parseDouble(nextString());
+		}
+
+	}
+
+}

@@ -1,0 +1,63 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        Stack<Integer> all = new Stack<Integer>();
+        Stack<Integer> rem = new Stack<Integer>();
+        Stack<Integer> divisible = new Stack<Integer>();
+        List<Integer> reverse = new ArrayList<Integer>();
+        List<Integer> print = new ArrayList<Integer>();
+        List<Integer> primes = new ArrayList<Integer>();
+        int n = in.nextInt();
+        int q = in.nextInt();
+        int k = q;
+        int i,j=3;
+        for(i=0;i<n;i++)
+            all.push(in.nextInt());
+        primes.add(2);
+        boolean div = false;
+        while(primes.size() < k){
+            div = false;
+            for(i=0;i<primes.size() && primes.size() < k;i++){
+                if(j%primes.get(i) == 0){
+                    div = true;
+                    j++;
+                    break;
+                }
+            }
+            if(!div){
+                primes.add(j);
+                j++;
+            }
+        }
+        
+        for(i=0;i<primes.size();i++){
+            reverse.clear();
+            while(!all.empty()){
+                if(all.peek() % primes.get(i) == 0){
+                    reverse.add(all.pop());
+                }
+                else{
+                    rem.push(all.pop());
+                }
+            }
+            divisible.clear();
+            while(!rem.empty())
+                divisible.push(rem.pop());
+            while(!divisible.empty())
+                all.push(divisible.pop());
+            Collections.reverse(reverse);
+            print.addAll(reverse);
+        }
+        if(!all.empty()){
+            while(!all.empty()){
+                print.add(all.pop());
+            }
+        }
+        for(i=0;i<print.size();i++)
+            System.out.println(print.get(i));
+    }
+}
