@@ -1,1 +1,0 @@
-return number.even?
