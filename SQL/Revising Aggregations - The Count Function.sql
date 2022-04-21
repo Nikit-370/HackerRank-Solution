@@ -1,2 +1,1 @@
-# Author: Thomas George Thomas
 SELECT COUNT(*) FROM CITY WHERE POPULATION > 100000
