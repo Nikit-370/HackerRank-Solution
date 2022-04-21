@@ -1,4 +1,3 @@
-# Author: Thomas George Thomas
 set @d=0, @p=0, @s=0, @a=0;
 
 select min(Doctor), min(Professor), min(Singer), min(Actor)
