@@ -1,4 +1,3 @@
-# Author: Thomas George Thomas
 SELECT BT.N,
 CASE
     WHEN BT.P IS NULL THEN 'Root'
