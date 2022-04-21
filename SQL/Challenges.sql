@@ -1,8 +1,3 @@
--- Use HAVING instead of WHERE since we have to filter on groups
--- Split the total number of counts into 2 pieces
--- First piece will be the largest number 
--- Second piece will be the number which doesn't repeat (Unique) or is available once
-
 select H.hacker_id, H.name, count(C.challenge_id) as total_count
 from Hackers H join Challenges C
 on H.hacker_id = C.hacker_id
